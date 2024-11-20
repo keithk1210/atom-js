@@ -10,6 +10,8 @@ var v1_images = [
     'images/v1_p3.png'
 ]
 
+
+
 var v1_content = v1_text.map((text, index) => {
     return {
         text: text,
@@ -32,9 +34,39 @@ var v1_q = [
     }
 ]
 
+var v1_q_image_test = [
+    {
+        type: 'multiple-choice',
+        prompt: 'Where did Jason put his letter before he went to see his mom?',
+        choices: [ 
+            'images/blanket1.jpg',
+            'images/desk1.jpg',
+            'images/question.jpg'
+        ]
+    },
+    {
+        type: 'multiple-choice',
+        prompt: 'Where did Jason put his letter before he went to see his mom?',
+        choices: [ 
+            'images/blanket2.jpg',
+            'images/desk2.jpg',
+            'images/question.jpg'
+        ]
+    },
+    {
+        type: 'multiple-choice',
+        prompt: 'Where did Jason put his letter before he went to see his mom?',
+        choices: [ 
+            'images/blanket3.jpg',
+            'images/desk3.jpg',
+            'images/question.jpg'
+        ]
+    }   
+]
+
 var v1 = {
-    content: v1_content,
-    questions: v1_q
+    content: "images/v1_one_page.png",
+    questions: v1_q_image_test
 }
 
 var v2_text = [
@@ -76,7 +108,7 @@ var v2_q = [
 ]
 
 var v2 = {
-    content: v2_content,
+    content: "images/v2_one_page.png",
     questions: v2_q
 }
 
@@ -119,7 +151,7 @@ var v3_q = [
 ]
 
 var v3 = {
-    content: v3_content,
+    content: "images/v3_one_page.png",
     questions: v3_q
 }
 
@@ -158,7 +190,7 @@ var v4_q = [
 ]    
 
 var v4 = { 
-    content: v4_content,
+    content: "images/v4_one_page.png",
     questions: v4_q
 }
 
@@ -193,9 +225,9 @@ var v5_q = [
 ]
 
 var v5 = {
-    content: v5_content,
+    content: "images/v5_one_page.png",
     questions: v5_q
 }
 
 
-var v = [v1,v2,v3,v4,v5];
+var v = [v1];

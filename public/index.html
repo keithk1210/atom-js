@@ -12,6 +12,10 @@
     <script src="https://unpkg.com/@jspsych/plugin-image-button-response@1.2.0"></script>
     <script src="https://unpkg.com/@jspsych/plugin-survey-text@1.1.3"></script>
     <script src="https://unpkg.com/@jspsych/plugin-survey-multi-choice@1.1.3"></script>
+    
+    <script src="https://unpkg.com/@jspsych/plugin-initialize-camera@1.0.2"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-initialize-microphone@1.0.3"></script>
+
 
     <link href="https://unpkg.com/jspsych@8.0.0/css/jspsych.css" rel="stylesheet" type="text/css" />
     <script src="js/experimental_variables.js"></script>
@@ -42,72 +46,26 @@
 </head>
 <body>
     <div class="container" id="jspsych-target">
-        <h1 class="title">Experiment</h1>
+        <h1 class="title">Advanced Theory of Mind</h1>
     </div>
 
     <script>
         // Experiment configuration object
         const experimentConfig = [
-            // {
-            //     type: 'image-text',
-            //     imageUrl: 'https://via.placeholder.com/300',
-            //     prompt: 'This is an image paired with text. Please observe the image carefully before continuing.',
-            //     buttonText: 'Continue'
-            // },
-            // {
-            //     type: 'text-input',
-            //     prompt: 'Please describe your thoughts on the previous image:',
-            //     buttonText: 'Submit'
-            // },
-            // {
-            //     type: 'multiple-choice',
-            //     prompt: 'Which of the following best describes the image you saw?',
-            //     options: ['Nature', 'Technology', 'Art', 'Other'],
-            //     buttonText: 'Next'
-            // },
         ];
 
-        // for (let i = 0 ; i < v1.length; i++) {
-        //   experimentConfig.push({
-        //     type: 'image-text',
-        //     imageUrl: v1[i].image,
-        //     prompt: v1[i].text,
-        //     buttonText: 'Continue'
-        //   });
-        // }
-
-        // for (let i = 0 ; i < v1_q.length; i++) {
-        //     switch (v1_q[i].type) {
-        //         case 'text-input':
-        //             experimentConfig.push({
-        //                 type: v1_q[i].type,
-        //                 prompt: v1_q[i].prompt,
-        //                 buttonText: 'Submit'
-        //             });
-        //             break;
-        //         case 'multiple-choice':
-        //             experimentConfig.push({
-        //                 type: v1_q[i].type,
-        //                 prompt: v1_q[i].prompt,
-        //                 options: v1_q[i].options,
-        //                 buttonText: 'Next'
-        //             });
-        //             break;
-        //     }
-        // }
-        
+    
         console.log(v);
 
         for (let i = 0; i < v.length; i++) {
-            
-            for (let j = 0 ; j < v[i].content.length; j++) {
-                experimentConfig.push({
+
+            experimentConfig.push({
                     type: 'image-text',
-                    imageUrl: v[i].content[j].image,
-                    prompt: v[i].content[j].text,
+                    imageUrl: v[i].content,
+                    prompt: "",
                     buttonText: 'Continue'
                 });
-            }
+            
 
             for (let j = 0 ; j < v[i].questions.length; j++) {
                 switch (v[i].questions[j].type) {
@@ -122,44 +80,13 @@
                         experimentConfig.push({
                             type: v[i].questions[j].type,
                             prompt: v[i].questions[j].prompt,
-                            options: v[i].questions[j].options,
+                            options: v[i].questions[j].choices,
                             buttonText: 'Next'
                         });
                         break;
                 }
             }
         }
-
-        // for (let i = 0 ; i < v2.length; i++) {
-        //   experimentConfig.push({
-        //     type: 'image-text',
-        //     imageUrl: v2[i].image,
-        //     prompt: v2[i].text,
-        //     buttonText: 'Continue'
-        //   });
-        // }
-
-        // for (let i = 0 ; i < v2_q.length; i++) {
-        //     switch (v2_q[i].type) {
-        //         case 'text-input':
-        //             experimentConfig.push({
-        //                 type: v2_q[i].type,
-        //                 prompt: v2_q[i].prompt,
-        //                 buttonText: 'Submit'
-        //             });
-        //             break;
-        //         case 'multiple-choice':
-        //             experimentConfig.push({
-        //                 type: v2_q[i].type,
-        //                 prompt: v2_q[i].prompt,
-        //                 options: v2_q[i].options,
-        //                 buttonText: 'Next'
-        //             });
-        //             break;
-        //     }
-        // }
-
-
 
         experimentConfig.push({
           type: 'thank-you',
@@ -174,8 +101,8 @@
                     return {
                         type: jsPsychImageButtonResponse,
                         stimulus: config.imageUrl,
-                        stimulus_height: 200,
-                        stimulus_width: 200,
+                        render_on_canvas: false,
+                        stimulus_width: 600,
                         prompt: `<p>${config.prompt}</p>`,
                         choices: [config.buttonText],
                         button_html:[`<button class="jspsych-btn">%choice%</button>`]
@@ -193,17 +120,11 @@
 
                 case 'multiple-choice':
                     return {
-                        type: jsPsychSurveyMultiChoice,
-                        questions: [{
-                            prompt: config.prompt,
-                            options: config.options.map(option => `Option: ${option}`),
-                            required: true,
-                            horizontal: false
-                        }],
-                        button_label: config.buttonText,
-                        on_finish: function(data) {
-                            console.log('Multiple choice response:', data.response);
-                        }
+                        type: jsPsychHtmlButtonResponse,
+                        stimulus: config.prompt,
+                        button_html: config.options.map(choice => `<img src="${choice}" style="width: 200px; height: 200px;">`),
+                        choices: config.options,
+                        prompt: '<p>Click on the image that best fits your choice.</p>'
                     };
 
                 case 'thank-you':
@@ -224,7 +145,25 @@
         }
 
         // Generate the timeline by mapping the experiment config to trials
-        const timeline = experimentConfig.map(createTrial).filter(trial => trial !== null);
+
+        
+        var initializeCamera = {
+            type: jsPsychInitializeCamera
+        };
+
+        var initializeMicrophone = {
+            type: jsPsychInitializeMicrophone
+        };
+
+        const pre_experiment = [initializeCamera, initializeMicrophone];
+
+        const trials = experimentConfig.map(createTrial).filter(trial => trial !== null);
+
+        timeline = [
+            ...trials
+        ]
+
+        //timeline = pre_experiment.concat(trials);
 
         // Initialize JsPsych with the dynamically generated timeline
         const jsPsych = initJsPsych({
