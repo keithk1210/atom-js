@@ -7,7 +7,8 @@ var v1_text = [
 var v1_images = [
     'images/v1_p1.png',
     'images/v1_p2.png',
-    'images/v1_p3.png'
+    'images/v1_p3.png',
+    'images/v1_one_page.png'
 ]
 
 
@@ -36,36 +37,18 @@ var v1_q = [
 
 var v1_q_image_test = [
     {
-        type: 'multiple-choice',
+        type: 'multiple-choice-image',
         prompt: 'Where did Jason put his letter before he went to see his mom?',
-        choices: [ 
-            'images/blanket1.jpg',
-            'images/desk1.jpg',
-            'images/question.jpg'
-        ]
-    },
-    {
-        type: 'multiple-choice',
-        prompt: 'Where did Jason put his letter before he went to see his mom?',
-        choices: [ 
+        options: [ 
             'images/blanket2.jpg',
             'images/desk2.jpg',
             'images/question.jpg'
         ]
-    },
-    {
-        type: 'multiple-choice',
-        prompt: 'Where did Jason put his letter before he went to see his mom?',
-        choices: [ 
-            'images/blanket3.jpg',
-            'images/desk3.jpg',
-            'images/question.jpg'
-        ]
-    }   
+    } 
 ]
 
 var v1 = {
-    content: "images/v1_one_page.png",
+    content: v1_images,
     questions: v1_q_image_test
 }
 
@@ -78,7 +61,8 @@ var v2_text = [
 var v2_images = [
     'images/v2_p1.png',
     'images/v2_p2.png',
-    'images/v2_p3.png'
+    'images/v2_p3.png',
+    'images/v2_one_page.png'
 ]
 
 var v2_content = v2_text.map((text, index) => {
@@ -102,13 +86,13 @@ var v2_q = [
         prompt: 'Good! Now think about the story to answer this one… which reasoning is correct?',
         options: [
             'The manager thinks that Johnny knows he wants him to be on the football team.',
-            ' The manager knows that Johnny doesn’t know that he wants him to be on the team.'
+            'The manager knows that Johnny doesn’t know that he wants him to be on the team.'
         ]
     }
 ]
 
 var v2 = {
-    content: "images/v2_one_page.png",
+    content: v2_images,
     questions: v2_q
 }
 
@@ -121,7 +105,8 @@ var v3_text = [
 var v3_images = [
     'images/v3_p1.png',
     'images/v3_p2.png',
-    'images/v3_p3.png'
+    'images/v3_p3.png',
+    'images/v3_one_page.png'
 ]
 
 var v3_content = v3_text.map((text, index) => {
@@ -151,7 +136,7 @@ var v3_q = [
 ]
 
 var v3 = {
-    content: "images/v3_one_page.png",
+    content: v3_images,
     questions: v3_q
 }
 
@@ -164,7 +149,8 @@ var v4_text = [
 var v4_images = [
     'images/v4_p1.png',
     'images/v4_p2.png',
-    'images/v4_p3.png'
+    'images/v4_p3.png',
+    'images/v4_one_page.png'
 ]
 
 var v4_content = v4_text.map((text, index) => {
@@ -190,7 +176,7 @@ var v4_q = [
 ]    
 
 var v4 = { 
-    content: "images/v4_one_page.png",
+    content: v4_images,
     questions: v4_q
 }
 
@@ -203,7 +189,8 @@ var v5_text = [
 var v5_images = [
     'images/v5_p1.png',
     'images/v5_p2.png',
-    'images/v5_p3.png'
+    'images/v5_p3.png',
+    'images/v5_one_page.png'
 ]   
 
 var v5_content = v5_text.map((text, index) => {
@@ -216,7 +203,7 @@ var v5_content = v5_text.map((text, index) => {
 var v5_q = [
     {
         type: 'text-input',
-        prompt: ' Was it true, what Mrs. Smith said? Why did Mrs. Smith say this to Jane?'
+        prompt: 'Was it true, what Mrs. Smith said? Why did Mrs. Smith say this to Jane?'
     },
     {
         type: 'text-input',
@@ -225,9 +212,9 @@ var v5_q = [
 ]
 
 var v5 = {
-    content: "images/v5_one_page.png",
+    content: v5_images,
     questions: v5_q
 }
 
 
-var v = [v1];
+var v = [v1,v2,v3,v4,v5];

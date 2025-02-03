@@ -59,13 +59,14 @@
 
         for (let i = 0; i < v.length; i++) {
 
-            experimentConfig.push({
+            for (let j = 0; j < v[i].content.length; j++) {
+                experimentConfig.push({
                     type: 'image-text',
-                    imageUrl: v[i].content,
+                    imageUrl: v[i].content[j],
                     prompt: "",
                     buttonText: 'Continue'
                 });
-            
+            }
 
             for (let j = 0 ; j < v[i].questions.length; j++) {
                 switch (v[i].questions[j].type) {
@@ -76,11 +77,19 @@
                             buttonText: 'Submit'
                         });
                         break;
+                    case 'multiple-choice-image':
+                        experimentConfig.push({
+                            type: v[i].questions[j].type,
+                            prompt: v[i].questions[j].prompt,
+                            options: v[i].questions[j].options,
+                            buttonText: 'Next'
+                        });
+                        break;
                     case 'multiple-choice':
                         experimentConfig.push({
                             type: v[i].questions[j].type,
                             prompt: v[i].questions[j].prompt,
-                            options: v[i].questions[j].choices,
+                            options: v[i].questions[j].options,
                             buttonText: 'Next'
                         });
                         break;
@@ -96,6 +105,7 @@
 
         // Function to create a JsPsych trial based on configuration
         function createTrial(config) {
+        
             switch (config.type) {
                 case 'image-text':
                     return {
@@ -118,7 +128,7 @@
                         }
                     };
 
-                case 'multiple-choice':
+                case 'multiple-choice-image':
                     return {
                         type: jsPsychHtmlButtonResponse,
                         stimulus: config.prompt,
@@ -126,6 +136,16 @@
                         choices: config.options,
                         prompt: '<p>Click on the image that best fits your choice.</p>'
                     };
+
+                case 'multiple-choice':
+                    return {
+                        type: jsPsychHtmlButtonResponse,
+                        stimulus: config.prompt,
+                        button_html: config.options.map(choice => `<button class="jspsych-btn">${choice}</button>`),
+                        choices: config.options,
+                        prompt: '<p>Click on the image that best fits your choice.</p>'
+                    };
+                
 
                 case 'thank-you':
                     return {
@@ -159,11 +179,7 @@
 
         const trials = experimentConfig.map(createTrial).filter(trial => trial !== null);
 
-        timeline = [
-            ...trials
-        ]
-
-        //timeline = pre_experiment.concat(trials);
+        timeline = pre_experiment.concat(trials);
 
         // Initialize JsPsych with the dynamically generated timeline
         const jsPsych = initJsPsych({
