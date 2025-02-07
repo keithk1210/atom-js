@@ -50,6 +50,34 @@
     </div>
 
     <script>
+
+        async function uploadData(userID,csvString) {
+            const data = {
+                userID: userID,
+                csvString: csvString
+            };
+
+            try {
+                const response = await fetch('/upload/data', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const responseData = await response.json();
+                console.log('Data uploaded successfully:', responseData);
+            } catch (error) {
+                console.error('Error sending data:', error);
+            }
+        }
+
+
         // Experiment configuration object
         const experimentConfig = [
         ];
@@ -95,6 +123,12 @@
                 }
             }
         }
+
+        experimentConfig.push({
+          type: 'user-id',
+          prompt: 'Please enter the user ID to continue:',
+          buttonText: 'Finish'
+        });
 
         experimentConfig.push({
           type: 'thank-you',
@@ -146,7 +180,24 @@
                         choices: config.options,
                         prompt: '<p>Click on the image that best fits your choice.</p>'
                     };
-                
+                case 'user-id':
+                    return {
+                        type: jsPsychSurveyText,
+                        questions: [{prompt: config.prompt, rows: 1, columns: 40}],
+                        button_label: config.buttonText,
+                        on_finish: function(data) {
+
+                           
+
+                            var code = data.response.Q0;
+
+                            jsPsych.data.addProperties({
+
+                                participantID: code
+
+                            });
+                        }
+                    };
 
                 case 'thank-you':
                     return {
@@ -154,6 +205,9 @@
                         stimulus: `<p>${config.prompt}</p>`,
                         choices: [config.buttonText],
                         button_html:[`<button class="jspsych-btn">%choice%</button>`],
+                        on_start: function(data) {
+                            uploadData(jsPsych.data.get().last(1).values()[0]['participantID'], jsPsych.data.get().csv());
+                        },
                         on_finish: function() {
                             jsPsych.data.displayData();
                         }
@@ -186,6 +240,9 @@
         const jsPsych = initJsPsych({
           display_element: 'jspsych-target', 
         });
+
+        
+
         jsPsych.run(timeline)
     </script>
 </body>

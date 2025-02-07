@@ -54,7 +54,7 @@ app.post('/upload/video', async (req, res) => {
 
 app.post('/upload/data', async (req, res) => {
     const bucketName = 'cheesebucketlehighu';
-    const data_dir = 'beach_ball_task_data/';
+    const data_dir = 'atom_data/';
     const fileName = data_dir + `${req.body.userID}.csv`; // Generate a unique file name
 
     const uuidStr = uuidv4();
