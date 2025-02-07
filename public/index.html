@@ -9,7 +9,7 @@
     <script src="https://unpkg.com/jspsych@8.0.0"></script>
     <!-- Import JsPsych Plugins -->
     <script src="https://unpkg.com/@jspsych/plugin-html-button-response@1.2.0"></script>
-    <script src="https://unpkg.com/@jspsych/plugin-image-button-response@1.2.0"></script>
+    <script src="js/plugin-multi-image-button-response.js"></script>
     <script src="https://unpkg.com/@jspsych/plugin-survey-text@1.1.3"></script>
     <script src="https://unpkg.com/@jspsych/plugin-survey-multi-choice@1.1.3"></script>
     
@@ -59,14 +59,13 @@
 
         for (let i = 0; i < v.length; i++) {
 
-            for (let j = 0; j < v[i].content.length; j++) {
-                experimentConfig.push({
-                    type: 'image-text',
-                    imageUrl: v[i].content[j],
-                    prompt: "",
-                    buttonText: 'Continue'
-                });
-            }
+            experimentConfig.push({
+                type: 'image-text',
+                imageUrls: v[i].content,
+                prompt: "",
+                buttonTextOptions: Array.from({ length: v[i].content.length }, (_, i) => `${i}`).concat("Next")
+            });
+            
 
             for (let j = 0 ; j < v[i].questions.length; j++) {
                 switch (v[i].questions[j].type) {
@@ -80,7 +79,7 @@
                     case 'multiple-choice-image':
                         experimentConfig.push({
                             type: v[i].questions[j].type,
-                            prompt: v[i].questions[j].prompt,
+                            prompt: "",
                             options: v[i].questions[j].options,
                             buttonText: 'Next'
                         });
@@ -88,7 +87,7 @@
                     case 'multiple-choice':
                         experimentConfig.push({
                             type: v[i].questions[j].type,
-                            prompt: v[i].questions[j].prompt,
+                            prompt: "",
                             options: v[i].questions[j].options,
                             buttonText: 'Next'
                         });
@@ -108,14 +107,16 @@
         
             switch (config.type) {
                 case 'image-text':
-                    return {
-                        type: jsPsychImageButtonResponse,
-                        stimulus: config.imageUrl,
+                    return { //Stimulus will be an array, choices array be will numbers 1-(stimulus.length), then add next at the end
+                        type: jsPsychMutliImageButtonResponse,
+                        stimulus: config.imageUrls,
                         render_on_canvas: false,
                         stimulus_width: 600,
                         prompt: `<p>${config.prompt}</p>`,
-                        choices: [config.buttonText],
-                        button_html:[`<button class="jspsych-btn">%choice%</button>`]
+                        choices: config.buttonTextOptions,
+                        on_finish: function(data) {
+                            console.log('User choice:', data.response);
+                        }
                     };
 
                 case 'text-input':

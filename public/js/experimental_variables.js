@@ -40,8 +40,8 @@ var v1_q_image_test = [
         type: 'multiple-choice-image',
         prompt: 'Where did Jason put his letter before he went to see his mom?',
         options: [ 
-            'images/blanket2.jpg',
-            'images/desk2.jpg',
+            'images/blanket1.jpg',
+            'images/desk1.jpg',
             'images/question.jpg'
         ]
     } 
