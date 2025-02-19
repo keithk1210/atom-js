@@ -34,7 +34,7 @@ var v1_q = [
 
 var v1 = {
     content: v1_images,
-    questions: v1_q_image_test
+    questions: v1_q
 }
 
 var v2_text = [
@@ -70,8 +70,8 @@ var v2_q = [
         type: 'multiple-choice-image',
         prompt: 'Good! Now think about the story to answer this one… which reasoning is correct?',
         options: [
-            'images/v2_q2_o1.jpg',
-            'images/v2_q2_o2.jpg',
+            'images/v2_q1_o1.png',
+            'images/v2_q1_o2.png',
             'images/question.jpg'
         ]
     }
@@ -115,8 +115,8 @@ var v3_q = [
         type: 'multiple-choice-image',
         prompt: 'Good! Now think about the story to answer this one… which reasoning is correct?',
         options: [
-            'images/v3_q2_o1.jpg',
-            'images/v3_q2_o2.jpg',
+            'images/v3_q1_o1.png',
+            'images/v3_q1_o2.png',
             'images/question.jpg'
         ]
     }
@@ -156,8 +156,8 @@ var v4_q = [
         type: 'multiple-choice-image',
         prompt: 'Where will the other army look for his tanks?',
         options: [
-            'images/v4_q2_o1.jpg',
-            'images/v4_q2_o2.jpg',
+            'images/v4_q1_o1.png',
+            'images/v4_q1_o2.png',
             'images/question.jpg']
     },
     {
@@ -207,4 +207,30 @@ var v5 = {
     questions: v5_q
 }
 
+var rmie_q = [
+    {
+        type: 'image-button',
+        prompt: 'What emotion is being displayed here?',
+        stimulus: 'images/rmie_p1.png',
+        options: ['serious','ashamed','bewildered','alarmed']
+    },
+    {
+        type: 'image-button',
+        prompt: 'What emotion is being displayed here?',
+        stimulus: 'images/rmie_p2.png',
+        options: ['panicked','incredulous','despondent','interested']
+    },
+    {
+        type: 'image-button',
+        prompt: 'What emotion is being displayed here?',
+        stimulus: 'images/rmie_p3.png',
+        options: ['apologetic','friendly','uneasy','dispirited']
+    }
+]
+
+var rmie = {
+    questions: rmie_q
+}
+
 var v = [v1,v2,v3,v4,v5];
+
