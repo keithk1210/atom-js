@@ -22,26 +22,11 @@ var v1_content = v1_text.map((text, index) => {
 
 var v1_q = [
     {
-        type: 'text-input',
-        prompt: 'Where did Jason put his letter before he went to see his mom?'
-    },
-    {
-        type: 'text-input',
-        prompt: 'Where did Lisa put the letter after she read it?'
-    },
-    {
-        type: 'text-input',
-        prompt: 'Does Jason know where the letter is now?'
-    }
-]
-
-var v1_q_image_test = [
-    {
         type: 'multiple-choice-image',
         prompt: 'Where did Jason put his letter before he went to see his mom?',
         options: [ 
-            'images/blanket1.jpg',
-            'images/desk1.jpg',
+            'images/v1_q1_o1.jpg',
+            'images/v1_q1_o2.jpg',
             'images/question.jpg'
         ]
     } 
@@ -82,11 +67,12 @@ var v2_q = [
         ]
     },
     {
-        type: 'multiple-choice',
+        type: 'multiple-choice-image',
         prompt: 'Good! Now think about the story to answer this one… which reasoning is correct?',
         options: [
-            'The manager thinks that Johnny knows he wants him to be on the football team.',
-            'The manager knows that Johnny doesn’t know that he wants him to be on the team.'
+            'images/v2_q2_o1.jpg',
+            'images/v2_q2_o2.jpg',
+            'images/question.jpg'
         ]
     }
 ]
@@ -126,11 +112,12 @@ var v3_q = [
         ]
     },
     {
-        type: 'multiple-choice',
+        type: 'multiple-choice-image',
         prompt: 'Good! Now think about the story to answer this one… which reasoning is correct?',
         options: [
-            'Sarah hoped that Joe would know that she didn’t know what Mrs. Brown wanted.',
-            'Sarah hoped that Joe would believe that she knew what Mrs. Brown wanted.'
+            'images/v3_q2_o1.jpg',
+            'images/v3_q2_o2.jpg',
+            'images/question.jpg'
         ]
     }
 ]
@@ -166,8 +153,12 @@ var v4_q = [
         prompt: 'Is it true what the prisoner said?'
     },
     {
-        type: 'audio-input',
-        prompt: 'Where will the other army look for his tanks?'
+        type: 'multiple-choice-image',
+        prompt: 'Where will the other army look for his tanks?',
+        options: [
+            'images/v4_q2_o1.jpg',
+            'images/v4_q2_o2.jpg',
+            'images/question.jpg']
     },
     {
         type: 'audio-input',
