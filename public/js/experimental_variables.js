@@ -162,15 +162,15 @@ var v4_content = v4_text.map((text, index) => {
 
 var v4_q = [
     {
-        type: 'text-input',
+        type: 'audio-input',
         prompt: 'Is it true what the prisoner said?'
     },
     {
-        type: 'text-input',
+        type: 'audio-input',
         prompt: 'Where will the other army look for his tanks?'
     },
     {
-        type: 'text-input',
+        type: 'audio-input',
         prompt: 'Why did the prisoner say what he said?'
     }
 ]    
@@ -202,11 +202,11 @@ var v5_content = v5_text.map((text, index) => {
 
 var v5_q = [
     {
-        type: 'text-input',
+        type: 'audio-input',
         prompt: 'Was it true, what Mrs. Smith said? Why did Mrs. Smith say this to Jane?'
     },
     {
-        type: 'text-input',
+        type: 'audio-input',
         prompt: 'Thank you so much for listening to all of these stories and answering the questions! Is there anything else you would like to tell us about the stories you heard?'
     }
 ]
@@ -215,6 +215,5 @@ var v5 = {
     content: v5_images,
     questions: v5_q
 }
-
 
 var v = [v1,v2,v3,v4,v5];

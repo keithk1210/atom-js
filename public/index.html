@@ -16,6 +16,7 @@
     <script src="https://unpkg.com/@jspsych/plugin-initialize-camera@1.0.2"></script>
     <script src="https://unpkg.com/@jspsych/plugin-initialize-microphone@1.0.3"></script>
 
+    <script src="https://unpkg.com/@jspsych/plugin-html-audio-response@1.0.3"></script>
 
     <link href="https://unpkg.com/jspsych@8.0.0/css/jspsych.css" rel="stylesheet" type="text/css" />
     <script src="js/experimental_variables.js"></script>
@@ -77,6 +78,16 @@
             }
         }
 
+        function getOrdinalPage(num) {
+            if (num < 1 || num > 10 || !Number.isInteger(num)) {
+                throw new Error("Input must be an integer between 1 and 10.");
+            }
+            
+            const ordinals = ["First", "Second", "Third", "Fourth", "Fifth", "Sixth", "Seventh", "Eighth", "Ninth", "Tenth"];
+            
+            return `${ordinals[num - 1]} Page`;
+        }
+
 
         // Experiment configuration object
         const experimentConfig = [
@@ -91,13 +102,13 @@
                 type: 'image-text',
                 imageUrls: v[i].content,
                 prompt: "",
-                buttonTextOptions: Array.from({ length: v[i].content.length }, (_, i) => `${i}`).concat("Next")
+                buttonTextOptions: Array.from({ length: v[i].content.length }, (_, i) => `${getOrdinalPage(i+1)}`).concat("Next")
             });
             
 
             for (let j = 0 ; j < v[i].questions.length; j++) {
                 switch (v[i].questions[j].type) {
-                    case 'text-input':
+                    case 'audio-input':
                         experimentConfig.push({
                             type: v[i].questions[j].type,
                             prompt: v[i].questions[j].prompt,
@@ -153,14 +164,27 @@
                         }
                     };
 
-                case 'text-input':
+                case 'audio-input':
                     return {
-                        type: jsPsychSurveyText,
-                        questions: [{prompt: config.prompt, rows: 5, columns: 40}],
-                        button_label: config.buttonText,
-                        on_finish: function(data) {
-                            console.log('User input:', data.response);
-                        }
+                        timeline: [
+                            {
+                                type: jsPsychHtmlButtonResponse,
+                                stimulus: `The next page will record your voice. Please speak your answer to this question: <br><i>${config.prompt}</i><br> Click the button below to continue.`,
+                                button_html: [`<button class="jspsych-btn">Continue</button>`],
+                                choices: ['Continue'],                    
+                            },
+                            {
+                                type: jsPsychHtmlAudioResponse,
+                                stimulus: 'Recording...',
+                                show_done_button: true,
+                                done_button_label: 'Stop Recording',
+                                allow_playback: true,
+                                recording_duration: 60 * 1000,
+                                on_finish: function(data) {
+                                    console.log('User input:', data.response);
+                                }
+                            }
+                        ]
                     };
 
                 case 'multiple-choice-image':
@@ -178,7 +202,7 @@
                         stimulus: config.prompt,
                         button_html: config.options.map(choice => `<button class="jspsych-btn">${choice}</button>`),
                         choices: config.options,
-                        prompt: '<p>Click on the image that best fits your choice.</p>'
+                        prompt: '<p>Click on the response that best fits your choice.</p>'
                     };
                 case 'user-id':
                     return {
@@ -235,6 +259,31 @@
         const trials = experimentConfig.map(createTrial).filter(trial => trial !== null);
 
         timeline = pre_experiment.concat(trials);
+
+        // timeline = [initializeCamera, initializeMicrophone,
+
+        //             {
+        //         timeline: [
+        //             {
+        //                 type: jsPsychHtmlButtonResponse,
+        //                 stimulus: 'The next page will record your voice. Please speak your answer to this question: (question). Click the button below to continue.',
+        //                 button_html: [`<button class="jspsych-btn">Continue</button>`],
+        //                 choices: ['Continue'],                    
+        //             },
+        //             {
+        //                 type: jsPsychHtmlAudioResponse,
+        //                 stimulus: 'Recording...',
+        //                 show_done_button: true,
+        //                 done_button_label: 'Stop Recording',
+        //                 allow_playback: true,
+        //                 recording_duration: 60 * 1000,
+        //                 on_finish: function(data) {
+        //                     console.log('User input:', data.response);
+        //                 }
+        //             }
+        //         ]
+        //     }
+        // ]
 
         // Initialize JsPsych with the dynamically generated timeline
         const jsPsych = initJsPsych({
