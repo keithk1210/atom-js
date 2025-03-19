@@ -120,7 +120,7 @@ async function fetchS3ObjectList(pull_dir) {
                     try {
                         // Clear previous messages and data
 
-                        const bucketName = 'cheesebucketlehighu'; // Replace with your actual bucket name
+                        const bucketName = bucketName; // Replace with your actual bucket name
                         const objectKey = responseData.data[elem].Key;     // Replace with your actual JSON object key
 
                         users.push(getObjectFromS3(bucketName, objectKey));

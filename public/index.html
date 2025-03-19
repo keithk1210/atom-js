@@ -99,79 +99,86 @@
 
 
         // generate vignettes
-        for (let i = 0; i < v.length; i++) {
+        // for (let i = 0; i < v.length; i++) {
 
-            experimentConfig.push({
-                type: 'image-text',
-                imageUrls: v[i].content,
-                prompt: "",
-                buttonTextOptions: Array.from({ length: v[i].content.length }, (_, i) => `${getOrdinalPage(i+1)}`).concat("Next")
-            });
+        //     experimentConfig.push({
+        //         type: 'image-text',
+        //         imageUrls: v[i].content,
+        //         prompt: "",
+        //         buttonTextOptions: Array.from({ length: v[i].content.length }, (_, i) => `${getOrdinalPage(i+1)}`).concat("Next")
+        //     });
 
-            experimentConfig.push({
-                type: 'update',
-                prompt: "Please only proceed if you fully understand the previous story.",
-                options: ['Continue'],
-                buttonText: 'Next'
-            });
+        //     experimentConfig.push({
+        //         type: 'update',
+        //         prompt: "Please only proceed if you fully understand the previous story.",
+        //         options: ['Continue'],
+        //         buttonText: 'Next'
+        //     });
 
-            for (let j = 0 ; j < v[i].questions.length; j++) {
-                switch (v[i].questions[j].type) {
-                    case 'audio-input':
-                        experimentConfig.push({
-                            type: v[i].questions[j].type,
-                            prompt: v[i].questions[j].prompt,
-                            buttonText: 'Submit'
-                        });
-                        break;
-                    case 'multiple-choice-image':
-                        experimentConfig.push({
-                            type: v[i].questions[j].type,
-                            prompt: "",
-                            options: v[i].questions[j].options,
-                            buttonText: 'Next'
-                        });
-                        break;
-                    case 'multiple-choice':
-                        experimentConfig.push({
-                            type: v[i].questions[j].type,
-                            prompt: "",
-                            options: v[i].questions[j].options,
-                            buttonText: 'Next'
-                        });
-                        break;
-                    case 'image-button':({
-                        type: v[i].questions[j].type,
-                        prompt: v[i].questions[j].prompt,
-                        stimulus: v[i].questions[j].stimulus,
-                        options: v[i].questions[j].options
-                    });
-                }
-            }
+        //     for (let j = 0 ; j < v[i].questions.length; j++) {
+        //         switch (v[i].questions[j].type) {
+        //             case 'audio-input':
+        //                 experimentConfig.push({
+        //                     type: v[i].questions[j].type,
+        //                     prompt: v[i].questions[j].prompt,
+        //                     buttonText: 'Submit'
+        //                 });
+        //                 break;
+        //             case 'multiple-choice-image':
+        //                 experimentConfig.push({
+        //                     type: v[i].questions[j].type,
+        //                     prompt: "",
+        //                     options: v[i].questions[j].options,
+        //                     buttonText: 'Next'
+        //                 });
+        //                 break;
+        //             case 'multiple-choice':
+        //                 experimentConfig.push({
+        //                     type: v[i].questions[j].type,
+        //                     prompt: "",
+        //                     options: v[i].questions[j].options,
+        //                     buttonText: 'Next'
+        //                 });
+        //                 break;
+        //             case 'image-button':({
+        //                 type: v[i].questions[j].type,
+        //                 prompt: v[i].questions[j].prompt,
+        //                 stimulus: v[i].questions[j].stimulus,
+        //                 options: v[i].questions[j].options
+        //             });
+        //         }
+        //     }
 
-            experimentConfig.push({
-                type: 'update',
-                prompt: "Please click \"continue\" to advance to the next story.",
-                options: ['Continue'],
-                buttonText: 'Next'
-            });
-        }
+        //     experimentConfig.push({
+        //         type: 'update',
+        //         prompt: "Please click \"continue\" to advance to the next story.",
+        //         options: ['Continue'],
+        //         buttonText: 'Next'
+        //     });
+        // }
 
-        // generate rmie
+        // // generate rmie
 
-        for (let i = 0; i < rmie.questions.length; i++) {
-            experimentConfig.push({
-                type: rmie.questions[i].type,
-                prompt: rmie.questions[i].prompt,
-                options: rmie.questions[i].options,
-                stimulus: rmie.questions[i].stimulus
-            });
-        }
+        // for (let i = 0; i < rmie.questions.length; i++) {
+        //     experimentConfig.push({
+        //         type: rmie.questions[i].type,
+        //         prompt: rmie.questions[i].prompt,
+        //         options: rmie.questions[i].options,
+        //         stimulus: rmie.questions[i].stimulus
+        //     });
+        // }
+
+        // experimentConfig.push({
+        //   type: 'user-id',
+        //   prompt: 'Please enter the user ID to continue:',
+        //   buttonText: 'Finish'
+        // });
 
         experimentConfig.push({
-          type: 'user-id',
-          prompt: 'Please enter the user ID to continue:',
-          buttonText: 'Finish'
+            type: 'multiple-choice',
+            prompt: "hello",
+            options: ['this','is','test'],
+            buttonText: 'Next'
         });
 
         experimentConfig.push({

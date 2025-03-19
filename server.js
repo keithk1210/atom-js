@@ -137,7 +137,7 @@ app.get('/s3/get-object/bucket/:bucket/key/:key', async (req, res) => {
 
 app.get('/s3/list-objects', async (req, res) => {
     const input = {
-      Bucket: 'cheesebucketlehighu',  // Replace with your actual bucket name
+      Bucket: bucketName,  // Replace with your actual bucket name
       MaxKeys: 100,               // Limit the number of objects returned
     };
   
