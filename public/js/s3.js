@@ -70,6 +70,28 @@ function getDirectory(path) {
     });
   }
 
+  function getUUID() {
+    const url = `/uuid`;
+    
+    return fetch(url)
+        .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.text();
+        })
+        .then(data => {
+        console.log('Data received:', data);
+        // Handle the received data
+        return data;  // Return the data from this promise
+        })
+        .catch(error => {
+        console.error('Error fetching object:', error);
+        // Handle the error
+        throw error; // Re-throw the error for the caller to handle
+    });
+  }
+
     async function uploadData(userID,csvString) {
 
         const data = {

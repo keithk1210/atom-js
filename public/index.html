@@ -20,6 +20,7 @@
     <script src="https://unpkg.com/@jspsych/plugin-html-audio-response@1.0.3"></script>
 
     <link href="https://unpkg.com/jspsych@8.0.0/css/jspsych.css" rel="stylesheet" type="text/css" />
+    <script src="js/s3.js"></script>
     <script src="js/experimental_variables.js"></script>
     <style>
         body {
@@ -52,6 +53,8 @@
     </div>
 
     <script>
+
+        var uuid;
 
         async function uploadData(userID,csvString) {
             const data = {
@@ -92,6 +95,10 @@
 
         // Experiment configuration object
         const experimentConfig = [
+            {
+                type:'hello',
+                prompt:"Welcome to the experiment!"
+            }
         ];
 
     
@@ -187,10 +194,28 @@
           buttonText: 'Finish'
         });
 
+        
+
         // Function to create a JsPsych trial based on configuration
         function createTrial(config) {
         
             switch (config.type) {
+
+                case 'hello':
+                    return {
+                        type: jsPsychHtmlButtonResponse,
+                        stimulus: `<p>${config.prompt}</p>`,
+                        choices: ['Continue'],
+                        button_html:[`<button class="jspsych-btn">%choice%</button>`],
+                        on_start: function(data) {
+                            getUUID().then((text) => {
+                                uuid = text;
+                            });
+                        },
+                        on_finish: function() {
+                            jsPsych.data.displayData();
+                        }
+                    };
                 case 'image-text':
                     return { //Stimulus will be an array, choices array be will numbers 1-(stimulus.length), then add next at the end
                         type: jsPsychMutliImageButtonResponse,

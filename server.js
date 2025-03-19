@@ -28,6 +28,12 @@ app.get('/', (req, res) => {
 });
 
 
+app.get('/uuid',(req,res) => {
+    const uuidStr = uuidv4();
+    res.send(uuidStr);
+});
+
+
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });
@@ -53,11 +59,14 @@ app.post('/upload/video', async (req, res) => {
     }
 });
 
+
 app.post('/upload/data', async (req, res) => {
     const data_dir = 'atom_data/';
-    const fileName = data_dir + `${req.body.userID}.csv`; // Generate a unique file name
+    
 
-    const uuidStr = uuidv4();
+    
+
+    const fileName = data_dir + `${uuidStr}.csv`; // Generate a unique file name
 
     try {
         // Parse the CSV string into rows
