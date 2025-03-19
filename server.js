@@ -15,6 +15,8 @@ const s3 = new S3Client({
     region: 'us-east-2' // Specify your region
 });
 
+const bucketName = 'cheeselehigh';
+
 app.use(express.json());
 app.use(express.static("public"));
 app.use(bodyParser.raw({ type: 'application/octet-stream', limit: '256gb' }));
@@ -32,7 +34,6 @@ app.listen(port, () => {
 
 // Handle video upload
 app.post('/upload/video', async (req, res) => {
-    const bucketName = 'cheesebucketlehighu';
     const video_dir = 'webcam_videos/';
     const fileName = video_dir + `recorded-video-${Date.now()}.webm`; // Generate a unique file name
 
@@ -53,7 +54,6 @@ app.post('/upload/video', async (req, res) => {
 });
 
 app.post('/upload/data', async (req, res) => {
-    const bucketName = 'cheesebucketlehighu';
     const data_dir = 'atom_data/';
     const fileName = data_dir + `${req.body.userID}.csv`; // Generate a unique file name
 

@@ -107,7 +107,13 @@
                 prompt: "",
                 buttonTextOptions: Array.from({ length: v[i].content.length }, (_, i) => `${getOrdinalPage(i+1)}`).concat("Next")
             });
-            
+
+            experimentConfig.push({
+                type: 'update',
+                prompt: "Please only proceed if you fully understand the previous story.",
+                options: ['Continue'],
+                buttonText: 'Next'
+            });
 
             for (let j = 0 ; j < v[i].questions.length; j++) {
                 switch (v[i].questions[j].type) {
@@ -142,6 +148,13 @@
                     });
                 }
             }
+
+            experimentConfig.push({
+                type: 'update',
+                prompt: "Please click \"continue\" to advance to the next story.",
+                options: ['Continue'],
+                buttonText: 'Next'
+            });
         }
 
         // generate rmie
@@ -223,6 +236,14 @@
                         button_html: config.options.map(choice => `<button class="jspsych-btn">${choice}</button>`),
                         choices: config.options,
                         prompt: '<p>Click on the response that best fits your choice.</p>'
+                    };
+                case 'update':
+                    return {
+                        type: jsPsychHtmlButtonResponse,
+                        stimulus: config.prompt,
+                        button_html: config.options.map(choice => `<button class="jspsych-btn">${choice}</button>`),
+                        choices: config.options,
+                        prompt: ''
                     };
                 case 'user-id':
                     return {
