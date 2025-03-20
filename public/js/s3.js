@@ -8,6 +8,62 @@ function isDirectory(path) {
     }
 }
 
+async function uploadData(userUUID,csvString) {
+
+    console.log("In Upload data: " + userUUID);
+    const data = {
+        userUUID: userUUID,
+        csvString: csvString
+    };
+
+    try {
+        const response = await fetch('/upload/data', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const responseData = await response.json();
+        console.log('Data uploaded successfully:', responseData);
+    } catch (error) {
+        console.error('Error sending data:', error);
+    }
+}
+
+async function uploadAudio(userUUID,base64) {
+
+    console.log("In Upload data: " + userUUID);
+    const data = {
+        userUUID: userUUID,
+        base64: base64
+    };
+
+    try {
+        const response = await fetch('/upload/data/audio', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const responseData = await response.json();
+        console.log('Data uploaded successfully:', responseData);
+    } catch (error) {
+        console.error('Error sending data:', error);
+    }
+}
+
 function getDirectory(path) {
     return path.split("/")[0];
 }
@@ -92,34 +148,7 @@ function getDirectory(path) {
     });
   }
 
-    async function uploadData(userID,csvString) {
-
-        const data = {
-            userID: userID,
-            csvString: csvString
-        };
-
-        console.log("uploadData: ",csvString);
-
-        try {
-            const response = await fetch('/upload/data', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            });
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const responseData = await response.json();
-            console.log('Data uploaded successfully:', responseData);
-        } catch (error) {
-            console.error('Error sending data:', error);
-        }
-    }
+   
 
 
 async function fetchS3ObjectList(pull_dir) {

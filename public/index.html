@@ -54,33 +54,9 @@
 
     <script>
 
-        var uuid;
+        var uuidStr;
 
-        async function uploadData(userID,csvString) {
-            const data = {
-                userID: userID,
-                csvString: csvString
-            };
-
-            try {
-                const response = await fetch('/upload/data', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                });
-
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-
-                const responseData = await response.json();
-                console.log('Data uploaded successfully:', responseData);
-            } catch (error) {
-                console.error('Error sending data:', error);
-            }
-        }
+        
 
         function getOrdinalPage(num) {
             if (num < 1 || num > 10 || !Number.isInteger(num)) {
@@ -105,75 +81,75 @@
         console.log(v);
 
 
-        // generate vignettes
-        // for (let i = 0; i < v.length; i++) {
+        //generate vignettes
+        for (let i = 0; i < v.length; i++) {
 
-        //     experimentConfig.push({
-        //         type: 'image-text',
-        //         imageUrls: v[i].content,
-        //         prompt: "",
-        //         buttonTextOptions: Array.from({ length: v[i].content.length }, (_, i) => `${getOrdinalPage(i+1)}`).concat("Next")
-        //     });
+            experimentConfig.push({
+                type: 'image-text',
+                imageUrls: v[i].content,
+                prompt: "",
+                buttonTextOptions: Array.from({ length: v[i].content.length }, (_, i) => `${getOrdinalPage(i+1)}`).concat("Next")
+            });
 
-        //     experimentConfig.push({
-        //         type: 'update',
-        //         prompt: "Please only proceed if you fully understand the previous story.",
-        //         options: ['Continue'],
-        //         buttonText: 'Next'
-        //     });
+            experimentConfig.push({
+                type: 'update',
+                prompt: "Please only proceed if you fully understand the previous story.",
+                options: ['Continue'],
+                buttonText: 'Next'
+            });
 
-        //     for (let j = 0 ; j < v[i].questions.length; j++) {
-        //         switch (v[i].questions[j].type) {
-        //             case 'audio-input':
-        //                 experimentConfig.push({
-        //                     type: v[i].questions[j].type,
-        //                     prompt: v[i].questions[j].prompt,
-        //                     buttonText: 'Submit'
-        //                 });
-        //                 break;
-        //             case 'multiple-choice-image':
-        //                 experimentConfig.push({
-        //                     type: v[i].questions[j].type,
-        //                     prompt: "",
-        //                     options: v[i].questions[j].options,
-        //                     buttonText: 'Next'
-        //                 });
-        //                 break;
-        //             case 'multiple-choice':
-        //                 experimentConfig.push({
-        //                     type: v[i].questions[j].type,
-        //                     prompt: "",
-        //                     options: v[i].questions[j].options,
-        //                     buttonText: 'Next'
-        //                 });
-        //                 break;
-        //             case 'image-button':({
-        //                 type: v[i].questions[j].type,
-        //                 prompt: v[i].questions[j].prompt,
-        //                 stimulus: v[i].questions[j].stimulus,
-        //                 options: v[i].questions[j].options
-        //             });
-        //         }
-        //     }
+            for (let j = 0 ; j < v[i].questions.length; j++) {
+                switch (v[i].questions[j].type) {
+                    case 'audio-input':
+                        experimentConfig.push({
+                            type: v[i].questions[j].type,
+                            prompt: v[i].questions[j].prompt,
+                            buttonText: 'Submit'
+                        });
+                        break;
+                    case 'multiple-choice-image':
+                        experimentConfig.push({
+                            type: v[i].questions[j].type,
+                            prompt: "",
+                            options: v[i].questions[j].options,
+                            buttonText: 'Next'
+                        });
+                        break;
+                    case 'multiple-choice':
+                        experimentConfig.push({
+                            type: v[i].questions[j].type,
+                            prompt: "",
+                            options: v[i].questions[j].options,
+                            buttonText: 'Next'
+                        });
+                        break;
+                    case 'image-button':({
+                        type: v[i].questions[j].type,
+                        prompt: v[i].questions[j].prompt,
+                        stimulus: v[i].questions[j].stimulus,
+                        options: v[i].questions[j].options
+                    });
+                }
+            }
 
-        //     experimentConfig.push({
-        //         type: 'update',
-        //         prompt: "Please click \"continue\" to advance to the next story.",
-        //         options: ['Continue'],
-        //         buttonText: 'Next'
-        //     });
-        // }
+            experimentConfig.push({
+                type: 'update',
+                prompt: "Please click \"continue\" to advance to the next story.",
+                options: ['Continue'],
+                buttonText: 'Next'
+            });
+        }
 
-        // // generate rmie
+        // generate rmie
 
-        // for (let i = 0; i < rmie.questions.length; i++) {
-        //     experimentConfig.push({
-        //         type: rmie.questions[i].type,
-        //         prompt: rmie.questions[i].prompt,
-        //         options: rmie.questions[i].options,
-        //         stimulus: rmie.questions[i].stimulus
-        //     });
-        // }
+        for (let i = 0; i < rmie.questions.length; i++) {
+            experimentConfig.push({
+                type: rmie.questions[i].type,
+                prompt: rmie.questions[i].prompt,
+                options: rmie.questions[i].options,
+                stimulus: rmie.questions[i].stimulus
+            });
+        }
 
         // experimentConfig.push({
         //   type: 'user-id',
@@ -181,12 +157,13 @@
         //   buttonText: 'Finish'
         // });
 
-        experimentConfig.push({
-            type: 'multiple-choice',
-            prompt: "hello",
-            options: ['this','is','test'],
-            buttonText: 'Next'
-        });
+        
+        // experimentConfig.push({
+        //     type: 'audio-input',
+        //     prompt: 'Hello',
+        //     buttonText: 'Submit'
+        // });
+                    
 
         experimentConfig.push({
           type: 'thank-you',
@@ -209,7 +186,7 @@
                         button_html:[`<button class="jspsych-btn">%choice%</button>`],
                         on_start: function(data) {
                             getUUID().then((text) => {
-                                uuid = text;
+                                uuidStr = text;
                             });
                         },
                         on_finish: function() {
@@ -246,7 +223,9 @@
                                 allow_playback: true,
                                 recording_duration: 60 * 1000,
                                 on_finish: function(data) {
-                                    console.log('User input:', data.response);
+                                    data.response = ''
+                                    console.log("In audio input on_finish: ", data.response)
+                                    uploadAudio(uuidStr,data.response);
                                 }
                             }
                         ]
@@ -284,8 +263,6 @@
                         button_label: config.buttonText,
                         on_finish: function(data) {
 
-                           
-
                             var code = data.response.Q0;
 
                             jsPsych.data.addProperties({
@@ -303,7 +280,8 @@
                         choices: [config.buttonText],
                         button_html:[`<button class="jspsych-btn">%choice%</button>`],
                         on_start: function(data) {
-                            uploadData(jsPsych.data.get().last(1).values()[0]['participantID'], jsPsych.data.get().csv());
+                            console.log("In Thank you: " + uuidStr)
+                            uploadData(uuidStr, jsPsych.data.get().csv());
                         },
                         on_finish: function() {
                             jsPsych.data.displayData();
@@ -330,7 +308,6 @@
 
         // Generate the timeline by mapping the experiment config to trials
 
-        
         var initializeCamera = {
             type: jsPsychInitializeCamera
         };

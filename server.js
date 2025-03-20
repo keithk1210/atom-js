@@ -6,6 +6,9 @@ const { parse } = require('csv-parse/sync'); // Library for parsing CSV
 const csv = require('csv-parser'); // CSV parser for handling CSV files
 const { stringify } = require('csv-stringify/sync'); // Library for converting back to CSV
 const { v4: uuidv4 } = require('uuid'); // UUID library
+const { Upload } = require("@aws-sdk/lib-storage");
+
+
 
 
 const app = express();
@@ -62,11 +65,10 @@ app.post('/upload/video', async (req, res) => {
 
 app.post('/upload/data', async (req, res) => {
     const data_dir = 'atom_data/';
-    
 
-    
+    console.log("Server: " + req.body.userUUID)
 
-    const fileName = data_dir + `${uuidStr}.csv`; // Generate a unique file name
+    const fileName = data_dir + `${req.body.userUUID}.csv`; // Generate a unique file name
 
     try {
         // Parse the CSV string into rows
@@ -75,7 +77,7 @@ app.post('/upload/data', async (req, res) => {
         // Add the 'participantUUID' column to each row
         records = records.map(row => ({
             ...row,
-            participantUUID: uuidStr // Add the new UUID for each row
+            participantUUID: req.body.userUUID // Add the new UUID for each row
         }));
 
         // Convert the updated data back to CSV format
@@ -97,6 +99,32 @@ app.post('/upload/data', async (req, res) => {
         res.status(500).json({ error: 'Error uploading data', details: err });
     }
 });
+
+app.post('/upload/data/audio', async (req, res) => {
+
+    const data_dir = 'atom_data/audio/';
+
+    const fileName = data_dir + `${req.body.userUUID}.wav`; // Generate a unique file name
+
+    try {
+
+        // Set up the S3 upload parameters
+        const params = {
+            Bucket: bucketName,
+            Key: fileName,
+            Body: req.body.base64,
+            ContentType: 'audio/wav',
+        };
+
+        // Upload the CSV to S3
+        const data = await s3.send(new PutObjectCommand(params));
+        res.json({ message: 'Data uploaded successfully', data });
+    } catch (err) {
+        console.error('Error uploading data:', err);
+        res.status(500).json({ error: 'Error uploading data', details: err });
+    }   
+});
+
 
 app.get('/s3/get-object/bucket/:bucket/key/:key', async (req, res) => {
     console.log("req.query", req.query);
