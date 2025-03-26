@@ -22,9 +22,28 @@
     <link href="https://unpkg.com/jspsych@8.0.0/css/jspsych.css" rel="stylesheet" type="text/css" />
     <script src="js/s3.js"></script>
     <script src="js/experimental_variables.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Delius+Unicase:wght@400;700&family=Roboto&display=swap" rel="stylesheet">
+
     <style>
+
+        * {
+            font-family: "Delius Unicase", cursive;
+        }
+
+        button,option,select {
+            font-family: "Delius Unicase", cursive !important;
+        }
+        
+        button {
+            font-size: 10px !important;
+        }
+        
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: "Delius Unicase", cursive;
             background-color: #f4f4f9;
             margin: 0;
             padding: 20px;
@@ -56,8 +75,6 @@
 
         var uuidStr;
 
-        
-
         function getOrdinalPage(num) {
             if (num < 1 || num > 10 || !Number.isInteger(num)) {
                 throw new Error("Input must be an integer between 1 and 10.");
@@ -80,22 +97,14 @@
     
         console.log(v);
 
-
         //generate vignettes
         for (let i = 0; i < v.length; i++) {
 
             experimentConfig.push({
                 type: 'image-text',
                 imageUrls: v[i].content,
-                prompt: "",
+                prompt: "Warning: Please only proceed to the next page if you fully understand the current story.",
                 buttonTextOptions: Array.from({ length: v[i].content.length }, (_, i) => `${getOrdinalPage(i+1)}`).concat("Next")
-            });
-
-            experimentConfig.push({
-                type: 'update',
-                prompt: "Please only proceed if you fully understand the previous story.",
-                options: ['Continue'],
-                buttonText: 'Next'
             });
 
             for (let j = 0 ; j < v[i].questions.length; j++) {
@@ -199,7 +208,7 @@
                         stimulus: config.imageUrls,
                         render_on_canvas: false,
                         stimulus_width: 600,
-                        prompt: `<p>${config.prompt}</p>`,
+                        prompt: `<p style="color:red !important;">${config.prompt}</p>`,
                         choices: config.buttonTextOptions,
                         on_finish: function(data) {
                             console.log('User choice:', data.response);
