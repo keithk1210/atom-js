@@ -36,11 +36,12 @@ async function uploadData(userUUID,csvString) {
     }
 }
 
-async function uploadAudio(userUUID,base64) {
+async function uploadAudio(userUUID,trialIndex,base64) {
 
     console.log("In Upload data: " + userUUID);
     const data = {
         userUUID: userUUID,
+        trialIndex: trialIndex,
         base64: base64
     };
 

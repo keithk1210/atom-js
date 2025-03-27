@@ -244,7 +244,13 @@ var jsPsychMutliImageButtonResponse = (function (jspsych) {
               button.setAttribute("disabled", "disabled");
             }
             if (trial.response_ends_trial) {
-              end_trial();
+
+              var end_time = performance.now();
+              var rt = Math.round(end_time - start_time);
+              response.button = -1;
+              response.rt = rt;
+              stimulusElement.classList.add("responded");
+              end_trial(); 
             }
           });
 
@@ -253,11 +259,7 @@ var jsPsychMutliImageButtonResponse = (function (jspsych) {
           }
 
           display_element.appendChild(endButtonGroup);
-          // var end_time = performance.now();
-          // var rt = Math.round(end_time - start_time);
-          // response.button = parseInt(choice);
-          // response.rt = rt;
-          // stimulusElement.classList.add("responded");
+          
           
          
         } else {

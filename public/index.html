@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customizable Experiment</title>
+    <title>What Are They Thinking?</title>
     <!-- Import JsPsych CSS -->
     <!-- Import JsPsych Library -->
     <script src="https://unpkg.com/jspsych@8.0.0"></script>
@@ -68,7 +68,7 @@
 </head>
 <body>
     <div class="container" id="jspsych-target">
-        <h1 class="title">Advanced Theory of Mind</h1>
+        <h1 class="title">What Are They Thinking?</h1>
     </div>
 
     <script>
@@ -160,18 +160,14 @@
             });
         }
 
-        // experimentConfig.push({
-        //   type: 'user-id',
-        //   prompt: 'Please enter the user ID to continue:',
-        //   buttonText: 'Finish'
-        // });
+
 
         
-        // experimentConfig.push({
-        //     type: 'audio-input',
-        //     prompt: 'Hello',
-        //     buttonText: 'Submit'
-        // });
+        experimentConfig.push({
+            type: 'audio-input',
+            prompt: 'Hello',
+            buttonText: 'Submit'
+        });
                     
 
         experimentConfig.push({
@@ -197,6 +193,7 @@
                             getUUID().then((text) => {
                                 uuidStr = text;
                             });
+
                         },
                         on_finish: function() {
                             jsPsych.data.displayData();
@@ -232,11 +229,9 @@
                                 allow_playback: true,
                                 recording_duration: 60 * 1000,
                                 on_finish: function(data) {
-                                    uploadAudio(uuidStr,data.response);
+                                    uploadAudio(uuidStr,data.trial_index,data.response);
                                     data.response = ''
-                                    console.log("In audio input on_finish: ", data.response)
-                                    uploadAudio(uuidStr,data.response);
-                                }
+                                    console.log("In audio input on_finish: ", data.response);                                }
                             }
                         ]
                     };
