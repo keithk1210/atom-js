@@ -113,13 +113,14 @@
                         experimentConfig.push({
                             type: v[i].questions[j].type,
                             prompt: v[i].questions[j].prompt,
+                            img_html: "<img src=\"/images/v" + (i+1) + "_one_page_no_text.png\" alt=\"Story in one page\" style=\"width: 600px; \">",
                             buttonText: 'Submit'
                         });
                         break;
-                    case 'multiple-choice-image':
+                    case 'multiple-choice-image':               
                         experimentConfig.push({
-                            type: v[i].questions[j].type,
-                            prompt: "",
+                            type: 'multiple-choice-image',
+                            prompt: "<img src=\"/images/v" + (i+1) + "_one_page_no_text.png\" alt=\"Story in one page\" style=\"width: 600px; \">",
                             options: v[i].questions[j].options,
                             buttonText: 'Next'
                         });
@@ -127,7 +128,7 @@
                     case 'multiple-choice':
                         experimentConfig.push({
                             type: v[i].questions[j].type,
-                            prompt: "",
+                            prompt: "<img src=\"/images/v" + (i+1) + "_one_page_no_text.png\" alt=\"Story in one page\" style=\"width: 600px; \">",
                             options: v[i].questions[j].options,
                             buttonText: 'Next'
                         });
@@ -165,6 +166,7 @@
           prompt: 'Thank you for participating in the experiment!',
           buttonText: 'Finish'
         });
+
 
         
 
@@ -207,7 +209,8 @@
                         timeline: [
                             {
                                 type: jsPsychHtmlButtonResponse,
-                                stimulus: `The next page will record your voice. Please speak your answer to this question: <br><i>${config.prompt}</i><br> Click the button below to continue.`,
+                                stimulus: `<br>${config.img_html}<br>
+                                The next page will record your voice. Please speak your answer to this question: <br><i>${config.prompt}</i><br> Click the button below to continue.`,
                                 button_html: [`<button class="jspsych-btn">Continue</button>`],
                                 choices: ['Continue'],                    
                             },
@@ -230,8 +233,9 @@
                     return {
                         type: jsPsychHtmlButtonResponse,
                         stimulus: config.prompt,
-                        button_html: config.options.map(choice => `<img src="${choice}" style="width: 200px; height: 200px;">`),
+                        button_html: config.options.map(choice => `<img src="${choice}" style="width: 175px; height: 175px;">`),
                         choices: config.options,
+
                         prompt: '<p>Click on the image that best fits your choice.</p>'
                     };
 
