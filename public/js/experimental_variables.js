@@ -7,8 +7,7 @@ var v1_text = [
 var v1_images = [
     'images/v1_p1.png',
     'images/v1_p2.png',
-    'images/v1_p3.png',
-    'images/v1_one_page.png'
+    'images/v1_p3.png'
 ]
 
 
@@ -29,7 +28,37 @@ var v1_q = [
             'images/v1_q1_o2.jpg',
             'images/question.jpg'
         ]
-    } 
+    },
+    {
+        type: 'multiple-choice-image',
+        prompt: 'Where did Lisa put the letter after she read it?',
+        options: [ 
+            'images/v1_q1_o1.jpg',
+            'images/v1_q1_o2.jpg',
+            'images/question.jpg'
+        ]
+    },
+    {
+        type: 'multiple-choice-image',
+        prompt: 'Does Jason know where the letter is now?',
+        options: [
+            'images/check_mark.png',
+            'images/x_mark.png'
+        ]
+    }, 
+    {
+        type: 'multiple-choice-image',
+        prompt: 'Now on the basis of this, if Jason goes to get his letter, where does Lisa think Jason will look for his letter?',
+        options: [ 
+            'images/v1_q1_o1.jpg',
+            'images/v1_q1_o2.jpg',
+            'images/question.jpg'
+        ]
+    }, 
+    {
+        type: 'audio-input',
+        prompt: 'Why does Lisa think this?'
+    },
 ]
 
 var v1 = {
@@ -46,9 +75,7 @@ var v2_text = [
 var v2_images = [
     'images/v2_p1.png',
     'images/v2_p2.png',
-    'images/v2_p3.png',
-    'images/v2_one_page.png'
-]
+    'images/v2_p3.png']
 
 var v2_content = v2_text.map((text, index) => {
     return {
@@ -91,8 +118,7 @@ var v3_text = [
 var v3_images = [
     'images/v3_p1.png',
     'images/v3_p2.png',
-    'images/v3_p3.png',
-    'images/v3_one_page.png'
+    'images/v3_p3.png'
 ]
 
 var v3_content = v3_text.map((text, index) => {
@@ -105,7 +131,7 @@ var v3_content = v3_text.map((text, index) => {
 var v3_q = [
     {
         type: 'multiple-choice',
-        prompt: 'Let’s see how well you remember the story!',
+        prompt: 'Which of the following statements is true?',
         options: [
             'Mrs Brown asks Sarah and Joe to bring in something funny to watch.',
             'Mrs Brown asks Sarah and Joe to bring in something scary to watch.'
@@ -113,7 +139,7 @@ var v3_q = [
     },
     {
         type: 'multiple-choice-image',
-        prompt: 'Good! Now think about the story to answer this one… which reasoning is correct?',
+        prompt: 'Which of the two statements do you think is right?',
         options: [
             'images/v3_q1_o1.png',
             'images/v3_q1_o2.png',
@@ -136,8 +162,7 @@ var v4_text = [
 var v4_images = [
     'images/v4_p1.png',
     'images/v4_p2.png',
-    'images/v4_p3.png',
-    'images/v4_one_page.png'
+    'images/v4_p3.png'
 ]
 
 var v4_content = v4_text.map((text, index) => {
@@ -149,8 +174,12 @@ var v4_content = v4_text.map((text, index) => {
 
 var v4_q = [
     {
-        type: 'audio-input',
-        prompt: 'Is it true what the prisoner said?'
+        type: 'multiple-choice-image',
+        prompt: 'Is it true what the prisoner said?',
+        options: [
+            'images/check_mark.png',
+            'images/x_mark.png'
+        ]
     },
     {
         type: 'multiple-choice-image',
@@ -180,8 +209,7 @@ var v5_text = [
 var v5_images = [
     'images/v5_p1.png',
     'images/v5_p2.png',
-    'images/v5_p3.png',
-    'images/v5_one_page.png'
+    'images/v5_p3.png'
 ]   
 
 var v5_content = v5_text.map((text, index) => {
@@ -193,12 +221,20 @@ var v5_content = v5_text.map((text, index) => {
 
 var v5_q = [
     {
-        type: 'audio-input',
-        prompt: 'Was it true, what Mrs. Smith said? Why did Mrs. Smith say this to Jane?'
+        type: 'multiple-choice-image',
+        prompt: 'Was it true, what Mrs. Smith said?',
+        options: [
+            'images/check_mark.png',
+            'images/x_mark.png'
+        ]
     },
     {
         type: 'audio-input',
-        prompt: 'Thank you so much for listening to all of these stories and answering the questions! Is there anything else you would like to tell us about the stories you heard?'
+        prompt: 'Why did Mrs. Smith say this to Jane?'
+    },
+    {
+        type: 'audio-input-goodbye',
+        prompt: 'Thank you so much for listening to all of these stories and answering the questions! Is there anything else you would like to tell us about the stories you heard? The next page will your record your answer to this question.'
     }
 ]
 

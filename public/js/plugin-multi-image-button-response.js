@@ -232,35 +232,35 @@ var jsPsychMutliImageButtonResponse = (function (jspsych) {
 
         if (choice == trial.stimulus.length) {
 
-          const endButtonGroup = document.createElement("div");
-          endButtonGroup.id = "jspsych-multi-image-button-response-endbtngrp";
+          if (document.getElementById("jspsych-multi-image-button-response-endbtngrp") == null) {
+            const endButtonGroup = document.createElement("div");
+            endButtonGroup.id = "jspsych-multi-image-button-response-endbtngrp";
 
-          endButtonGroup.insertAdjacentHTML("beforeend", trial.button_html('Click to confirm', -1));
+            endButtonGroup.insertAdjacentHTML("beforeend", trial.button_html('Click to confirm', -1));
 
-          const buttonElement = endButtonGroup.lastChild;
-          // buttonElement.dataset.choice = choiceIndex.toString();
-          buttonElement.addEventListener("click", () => {
-            for (const button of buttonGroupElement.children) {
-              button.setAttribute("disabled", "disabled");
+            const buttonElement = endButtonGroup.lastChild;
+            // buttonElement.dataset.choice = choiceIndex.toString();
+            buttonElement.addEventListener("click", () => {
+              for (const button of buttonGroupElement.children) {
+                button.setAttribute("disabled", "disabled");
+              }
+              if (trial.response_ends_trial) {
+
+                var end_time = performance.now();
+                var rt = Math.round(end_time - start_time);
+                response.button = -1;
+                response.rt = rt;
+                stimulusElement.classList.add("responded");
+                end_trial(); 
+              }
+            });
+
+            if (trial.prompt !== null) { 
+                display_element.insertAdjacentHTML("beforeend", trial.prompt);
             }
-            if (trial.response_ends_trial) {
 
-              var end_time = performance.now();
-              var rt = Math.round(end_time - start_time);
-              response.button = -1;
-              response.rt = rt;
-              stimulusElement.classList.add("responded");
-              end_trial(); 
-            }
-          });
-
-          if (trial.prompt !== null) { 
-              display_element.insertAdjacentHTML("beforeend", trial.prompt);
+            display_element.appendChild(endButtonGroup);
           }
-
-          display_element.appendChild(endButtonGroup);
-          
-          
          
         } else {
           image.src = trial.stimulus[choice];
