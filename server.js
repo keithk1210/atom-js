@@ -125,6 +125,28 @@ app.post('/upload/data/audio', async (req, res) => {
     }
 });
 
+app.post('/upload/data/video', async (req, res) => {
+
+    const data_dir = `${req.body.userUUID}/`;
+    const fileName = data_dir + `${req.body.userUUID}.wav`;
+
+
+    try {
+        const params = {
+            Bucket: bucketName,
+            Key: fileName,
+            Body: req.body.binaryData,
+            ContentType: 'video/webm', // Change this if your video is in a different format
+        };
+
+        const data = await s3.send(new PutObjectCommand(params));
+        res.json({ message: 'Video uploaded successfully', data });
+    } catch (err) {
+        console.error('Error uploading video:', err);
+        res.status(500).json({ error: 'Error uploading video', details: err });
+    }
+});
+
 
 
 app.get('/s3/get-object/bucket/:bucket/key/:key', async (req, res) => {

@@ -10,7 +10,11 @@
     <!-- Import JsPsych Plugins -->
     <script src="https://unpkg.com/@jspsych/plugin-html-button-response@1.2.0"></script>
     <script src="js/plugin-multi-image-button-response.js"></script>
+
     <script src="https://unpkg.com/@jspsych/plugin-image-button-response@1.2.0"></script>
+
+    <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@1.1.3"></script>
+
     <script src="https://unpkg.com/@jspsych/plugin-survey-text@1.1.3"></script>
     <script src="https://unpkg.com/@jspsych/plugin-survey-multi-choice@1.1.3"></script>
     
@@ -74,7 +78,7 @@
 
     <script>
 
-        var uuidStr;
+        let recordedChunks = [];
 
         function getOrdinalPage(num) {
             if (num < 1 || num > 10 || !Number.isInteger(num)) {
@@ -84,6 +88,38 @@
             const ordinals = ["First", "Second", "Third", "Fourth", "Fifth", "Sixth", "Seventh", "Eighth", "Ninth", "Tenth"];
             
             return `${ordinals[num - 1]} Page`;
+        }
+
+        function handleDataAvailable(event) {
+            console.log("Attempting to handle data with size: " + event.data.size);
+            if (event.data.size > 0) {
+                recordedChunks.push(event.data);
+                console.log('Data available:', event.data);
+            }
+        }
+
+        function handleStop() {
+            const recordedBlob = new Blob(recordedChunks, { type: 'video/webm' });
+            const videoUrl = URL.createObjectURL(recordedBlob);
+
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = videoUrl;
+            console.log("Downloading this video... " + videoUrl);
+            var subjID = 'defaultID'; // Replace this with actual participantID if available
+            a.download = 'recorded-video' + subjID + '.webm';
+            document.body.appendChild(a);
+            a.click();
+
+            window.URL.revokeObjectURL(videoUrl);
+            recordedChunks = [];
+            console.log("STOP HANDLED!");
+
+            uploadVideo(uuidStr,recordedBlob);
+        }
+
+        function stopRecording() {
+            mediaRecorder.stop();
         }
         
         // Experiment configuration object
@@ -96,14 +132,16 @@
 
         console.log(v);
 
-        populateExperimentConfig(experimentConfig);
+        //populateExperimentConfig(experimentConfig);
+
 
         // experimentConfig.push({
-        //             type: 'audio-input',
-        //             prompt: 'Readability test',
-        //             img_html: "<img src=\"/images/v" + (1) + "_one_page_no_text.png\" alt=\"Story in one page\" style=\"width: 600px; \">",
-        //             buttonText: 'Submit'
-        //         });
+        //                 type: 'multiple-choice-image',
+        //                 stimulus: "images/v1_one_page.png",
+        //                 options: ["images/v1_q1_o1.jpg","images/v1_q1_o2.jpg"],
+        //                 prompt: `Testing in between frames`
+        //             });
+        
 
         // experimentConfig.push({
         //             type: 'audio-input-goodbye',
@@ -115,7 +153,47 @@
         // Generate the timeline by mapping the experiment config to trials
 
         var initializeCamera = {
-            type: jsPsychInitializeCamera
+            type: jsPsychInitializeCamera,
+            on_finish: function (data) {
+
+                console.log(data.device_id);
+
+                console.log(jsPsych.pluginAPI.getCameraRecorder().stream);
+
+                // navigator.mediaDevices
+                //     .enumerateDevices()
+                //     .then((devices) => {
+                //     devices.forEach((device) => {
+                //         console.log(`${device.kind}: ${device.label} id = ${device.deviceId}`);
+                //     });
+                //     })
+                //     .catch((err) => {
+                //     console.log(`${err.name}: ${err.message}`);
+                // });
+
+                jsPsych.pluginAPI.getCameraRecorder().ondataavailable = handleDataAvailable;
+                jsPsych.pluginAPI.getCameraRecorder().onstop = handleStop;
+
+                jsPsych.pluginAPI.getCameraRecorder().onstart = () => {
+                    console.log('jsPsych.pluginAPI.getCameraRecorder() started');
+                };
+
+                jsPsych.pluginAPI.getCameraRecorder().onpause = () => {
+                    console.log('jsPsych.pluginAPI.getCameraRecorder() paused');
+                };
+
+                jsPsych.pluginAPI.getCameraRecorder().onresume = () => {
+                    console.log('jsPsych.pluginAPI.getCameraRecorder() resumed');
+                };
+
+                jsPsych.pluginAPI.getCameraRecorder().onerror = (event) => {
+                    console.error('jsPsych.pluginAPI.getCameraRecorder() error:', event.error);
+                };
+
+                // document.getElementById("myVideo").srcObject = cameraStream;
+                jsPsych.pluginAPI.getCameraRecorder().start(1000); // Request data every second
+                console.log("Created new mediaRecorder:", jsPsych.pluginAPI.getCameraRecorder());
+            }
         };
 
         var initializeMicrophone = {
@@ -124,7 +202,9 @@
 
         const pre_experiment = [initializeCamera, initializeMicrophone];
 
-        const trials = experimentConfig.map(createTrial).filter(trial => trial !== null);
+        var trials = [];
+
+        populateExperimentTimeline(trials);
 
         timeline = pre_experiment.concat(trials);
 

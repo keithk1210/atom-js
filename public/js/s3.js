@@ -65,6 +65,30 @@ async function uploadAudio(userUUID,trialIndex,base64) {
     }
 }
 
+async function uploadVideo(userUUID,blob) {
+
+
+    const reader = new FileReader();
+    reader.onloadend = function() {
+        const arrayBuffer = reader.result;
+        const binaryData = new Uint8Array(arrayBuffer);
+
+        fetch('/upload/data/video', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/octet-stream'
+            },
+            body: JSON.stringify({
+                userUUID: userUUID,
+                binaryData: binaryData
+            })
+        }).then(response => response.json())
+          .then(data => console.log('Video uploaded successfully:', data))
+          .catch(err => console.error('Error uploading video:', err));
+    };
+    reader.readAsArrayBuffer(blob);
+}
+
 function getDirectory(path) {
     return path.split("/")[0];
 }
